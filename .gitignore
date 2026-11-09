@@ -1,0 +1,5 @@
+data/
+site/data.json
+site/metrics.json
+__pycache__/
+shelf-signal-preview.html

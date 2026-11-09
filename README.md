@@ -43,10 +43,6 @@ The two mistakes do not cost the same. Missing a $10 sale with a 35% margin lose
 
 ![The three stock settings side by side](docs/stock-settings.png)
 
-**On a phone.**
-
-![The page on a phone](docs/phone.png)
-
 ## How it was tested
 
 - **Estimated demand.** A run of zero-sales days is flagged as a likely stockout when, given how often the product normally has a zero day, a run that long had under a 1% chance of happening by luck. The sales likely missed on those days are added back.

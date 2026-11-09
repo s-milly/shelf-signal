@@ -7,153 +7,174 @@
 <style>
 :root {
   color-scheme: light;
-  --paper: #f5f2ea; --sheet: #fbf9f4; --well: #ece8dd;
-  --ink: #1c1b18; --ink-2: #55524a; --muted: #6f6b61;
-  --rule: #ddd7c9; --rule-strong: #1c1b18; --axis: #bdb6a4;
+  --bg: #eef0ec; --panel: #ffffff; --well: #f3f4f1; --col: #f2f6fb;
+  --ink: #14171a; --ink-2: #4a5058; --muted: #697079;
+  --rule: #e1e4df; --rule-strong: #14171a; --axis: #b8bdb5;
   --s1: #2a62a8; --sig: #c4422a; --s3: #1f8a70;
-  --shadow: 0 1px 2px rgba(28,27,24,0.06), 0 8px 24px rgba(28,27,24,0.10);
+  --shadow: 0 0 0 1px rgba(20,23,26,0.06), 0 1px 2px rgba(20,23,26,0.05), 0 6px 20px rgba(20,23,26,0.06);
+  --lift: 0 0 0 1px rgba(20,23,26,0.06), 0 2px 4px rgba(20,23,26,0.06), 0 12px 32px rgba(20,23,26,0.12);
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --serif: "Iowan Old Style", "Charter", "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
-  --sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: ui-monospace, "SF Mono", "Cascadia Mono", "Segoe UI Mono", Menlo, Consolas, monospace;
+  --halo: var(--panel);
   font: 15px/1.5 var(--sans);
 }
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
-    --paper: #151412; --sheet: #1d1b18; --well: #262420;
-    --ink: #ece8de; --ink-2: #b9b3a5; --muted: #948e81;
-    --rule: #2e2b26; --rule-strong: #ece8de; --axis: #4a463e;
+    --bg: #0f1113; --panel: #171a1d; --well: #1e2226; --col: #1a2230;
+    --ink: #e8eaec; --ink-2: #b3b8be; --muted: #8b9198;
+    --rule: #262a2f; --rule-strong: #e8eaec; --axis: #454b52;
     --s1: #4f8fdc; --sig: #e0613f; --s3: #2fa383;
-    --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.45);
+    --shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 1px 2px rgba(0,0,0,0.4), 0 6px 20px rgba(0,0,0,0.35);
+    --lift: 0 0 0 1px rgba(255,255,255,0.08), 0 2px 4px rgba(0,0,0,0.4), 0 12px 32px rgba(0,0,0,0.5);
   }
 }
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
-body { margin: 0; background: var(--paper); color: var(--ink); -webkit-font-smoothing: antialiased; }
-h1, h2, h3 { margin: 0; font-family: var(--serif); font-weight: 600; text-wrap: balance; letter-spacing: -0.005em; }
-p, ul, ol, dl, dd { margin: 0; }
+body { margin: 0; background: var(--bg); color: var(--ink); -webkit-font-smoothing: antialiased; }
+h1, h2, h3, h4 { margin: 0; font-weight: 650; text-wrap: balance; letter-spacing: -0.02em; }
+p, ul, dl, dd { margin: 0; }
 p, li { text-wrap: pretty; }
 .small { font-size: 13px; color: var(--ink-2); }
-.num { font-variant-numeric: tabular-nums; }
-.kicker { font-size: 11px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); }
-:focus-visible { outline: 2px solid var(--s1); outline-offset: 2px; border-radius: 2px; }
+.label { font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+:focus-visible { outline: 2px solid var(--s1); outline-offset: 2px; border-radius: 4px; }
 button, select, input, summary { -webkit-tap-highlight-color: transparent; }
 .wrap { max-width: 1440px; margin: 0 auto; padding: 0 32px; }
+.panel { background: var(--panel); border: 1px solid transparent; border-radius: 14px; box-shadow: var(--shadow); }
 
-/* masthead */
-.mast { border-bottom: 1px solid var(--rule-strong); }
-.mast-in { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px; align-items: end; padding-top: 28px; padding-bottom: 22px; }
-.mast h1 { font-size: 40px; line-height: 1.05; margin-top: 6px; }
-.deck { font-family: var(--serif); font-size: 19px; color: var(--ink-2); margin-top: 8px; font-style: italic; max-width: 44ch; }
-.facts { display: grid; grid-auto-flow: column; }
-.facts div { padding: 0 22px; border-left: 1px solid var(--rule); }
-.facts div:first-child { border-left: 0; }
-.facts dt { font-size: 12px; color: var(--muted); max-width: 20ch; }
-.facts dd { font-size: 26px; font-weight: 600; line-height: 1.15; letter-spacing: -0.01em; }
-.facts dd small { font-size: 13px; font-weight: 500; color: var(--ink-2); letter-spacing: 0; }
+/* top bar */
+.bar { background: var(--panel); box-shadow: 0 1px 0 var(--rule); }
+.bar-in { display: flex; align-items: center; gap: 14px; height: 56px; }
+.mark { width: 22px; height: 22px; display: grid; grid-template-rows: repeat(3, 1fr); gap: 3px; padding: 2px 0; flex: none; }
+.mark i { display: block; border-radius: 1.5px; background: var(--ink); }
+.mark i:nth-child(1) { width: 60%; }
+.mark i:nth-child(2) { width: 100%; background: var(--sig); }
+.mark i:nth-child(3) { width: 82%; }
+.brand { font-weight: 700; font-size: 16px; letter-spacing: -0.02em; white-space: nowrap; }
+.crumb { color: var(--muted); font-size: 13px; display: flex; gap: 8px; align-items: center; min-width: 0; }
+.crumb span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.crumb::before { content: ""; width: 1px; height: 18px; background: var(--rule); margin-right: 6px; }
+.bar .label { margin-left: auto; }
 
-/* sections */
-.sec { border-top: 1px solid var(--rule-strong); padding-top: 12px; display: grid; gap: 14px; align-content: start; }
-.sec-label { display: flex; gap: 10px; align-items: baseline; }
-.sec-label b { font-size: 11px; font-weight: 700; color: var(--sig); letter-spacing: 0.06em; font-variant-numeric: tabular-nums; }
-.sec h3 { font-size: 21px; line-height: 1.2; }
-.page { display: grid; gap: 34px; padding: 26px 0 0; }
+/* hero */
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 40px; align-items: end; padding: 40px 0 32px; }
+.hero h1 { font-size: 44px; line-height: 1.04; letter-spacing: -0.035em; margin-top: 10px; max-width: 16ch; }
+.hero h1 em { font-style: normal; color: var(--sig); }
+.hero .lede { font-size: 16px; color: var(--ink-2); margin-top: 14px; max-width: 54ch; }
+.kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.kpi { padding: 14px 16px 16px; display: grid; gap: 6px; align-content: start; }
+.kpi .v { font-size: 30px; font-weight: 650; letter-spacing: -0.03em; line-height: 1.05; font-variant-numeric: tabular-nums; }
+.cmp { display: grid; gap: 5px; margin-top: 4px; }
+.cmp div { display: grid; grid-template-columns: 74px minmax(0, 1fr) auto; gap: 8px; align-items: center; font-size: 12px; color: var(--ink-2); }
+.cmp b { font-family: var(--mono); font-weight: 500; font-size: 12px; color: var(--ink); text-align: right; min-width: 48px; }
+.cmp .t { height: 6px; background: var(--well); border-radius: 3px; position: relative; overflow: hidden; }
+.cmp .t i { position: absolute; inset: 0 auto 0 0; border-radius: 3px; }
 
-/* order sheet + product file */
-.desk { display: grid; grid-template-columns: minmax(0, 1fr) 470px; gap: 36px; align-items: start; }
-.tools { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-input[type=search], select { font: inherit; font-size: 14px; padding: 7px 10px; border-radius: 6px; border: 1px solid var(--axis); background: var(--sheet); color: var(--ink); }
-input[type=search] { width: 220px; }
-.seg { display: inline-flex; border: 1px solid var(--axis); border-radius: 6px; padding: 2px; background: var(--sheet); }
-.seg button { font: inherit; font-size: 13px; border: 0; background: none; color: var(--ink-2); padding: 5px 10px; border-radius: 4px; cursor: pointer;
-  transition: background-color 120ms ease, color 120ms ease; }
-.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
-.policy-note { font-size: 13px; color: var(--ink-2); max-width: 78ch; }
-
-.totals { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
-.tot { padding: 12px 18px 14px; border-left: 1px solid var(--rule); display: grid; gap: 2px; align-content: start; }
-.tot:first-child { border-left: 0; padding-left: 0; }
-.tot .v { font-size: 26px; font-weight: 600; line-height: 1.15; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
-.tot .d { font-size: 13px; color: var(--ink-2); }
+/* desk */
+.desk { display: grid; grid-template-columns: minmax(0, 1fr) 480px; gap: 20px; align-items: start; }
+.sheet { padding: 20px 22px 22px; display: grid; gap: 16px; min-width: 0; }
+.panel-head { display: flex; gap: 14px 20px; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; }
+.panel-head h2 { font-size: 20px; line-height: 1.25; margin-top: 4px; }
+.seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 10px; padding: 3px; background: var(--well); }
+.seg button { font: inherit; font-size: 13px; font-weight: 500; border: 0; background: none; color: var(--ink-2); padding: 6px 12px; border-radius: 6px; cursor: pointer;
+  transition: background-color 120ms ease, color 120ms ease, scale 150ms ease-out; }
+.seg button[aria-pressed="true"] { background: var(--panel); color: var(--ink); box-shadow: 0 0 0 1px var(--rule), 0 1px 2px rgba(20,23,26,0.08); }
+.seg button:not(:disabled):active { scale: 0.96; }
+.policy-note { font-size: 13px; color: var(--ink-2); max-width: 80ch; }
+.totals { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); background: var(--well); border-radius: 10px; }
+.tot { padding: 12px 16px 13px; display: grid; gap: 3px; align-content: start; position: relative; }
+.tot + .tot::before { content: ""; position: absolute; left: 0; top: 12px; bottom: 12px; width: 1px; background: var(--rule); }
+.tot .v { font-size: 22px; font-weight: 650; letter-spacing: -0.02em; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.tot .d { font-size: 12px; color: var(--ink-2); }
+.tools { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+input[type=search], select { font: inherit; font-size: 14px; padding: 7px 10px; border-radius: 8px; border: 1px solid var(--axis); background: var(--panel); color: var(--ink); }
+input[type=search] { width: 240px; }
 
 .ledger { width: 100%; border-collapse: collapse; font-size: 14px; }
-.ledger th { text-align: left; font-size: 12px; font-weight: 600; color: var(--muted); padding: 8px 8px; border-bottom: 1px solid var(--rule-strong); white-space: nowrap; }
+.ledger th { text-align: left; font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted);
+  padding: 8px 10px; border-bottom: 1px solid var(--rule-strong); white-space: nowrap; }
 .ledger td { padding: 0; border-bottom: 1px solid var(--rule); }
-.ledger th:first-child { padding-left: 0; }
 .ledger .r { text-align: right; }
+.ledger .oc { background: var(--col); }
 .ledger tbody tr { cursor: pointer; transition: background-color 120ms ease; }
-.ledger tbody tr[aria-selected="true"] { background: var(--sheet); box-shadow: inset 3px 0 0 var(--ink); }
-@media (hover: hover) and (pointer: fine) { .ledger tbody tr:hover { background: var(--sheet); } }
-.ledger td > span { display: block; padding: 9px 8px; }
-.ledger td:first-child > span { padding-left: 12px; }
+.ledger tbody tr[aria-selected="true"] { background: var(--well); box-shadow: inset 3px 0 0 var(--sig); }
+.ledger tbody tr[aria-selected="true"] .oc { background: color-mix(in srgb, var(--col) 60%, var(--well)); }
+@media (hover: hover) and (pointer: fine) { .ledger tbody tr:hover { background: var(--well); } }
+.ledger td > span { display: block; padding: 9px 10px; }
 .ledger .fig { font-family: var(--mono); font-size: 13px; font-variant-numeric: tabular-nums; }
-.ledger .order { font-weight: 700; }
-.pid { font-weight: 500; }
-.pid small { display: block; font-size: 12px; color: var(--muted); font-weight: 400; }
+.ledger .order { font-weight: 700; font-size: 14px; }
+.pid { font-weight: 550; display: block; }
+.pid small { display: block; font-family: var(--mono); font-size: 11px; color: var(--muted); font-weight: 400; margin-top: 1px; }
 .up { color: var(--s1); }
 .down { color: var(--sig); }
-.tag { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
-  border: 1px solid var(--axis); border-radius: 3px; padding: 0 5px; line-height: 16px; display: inline-block; }
-.tag.warn { color: var(--sig); border-color: color-mix(in srgb, var(--sig) 55%, transparent); }
-.more { font: inherit; font-size: 14px; margin-top: 12px; padding: 7px 14px; border-radius: 6px; border: 1px solid var(--axis); background: var(--sheet); color: var(--ink); cursor: pointer;
+.flag { font-size: 11px; font-weight: 600; color: var(--sig); background: color-mix(in srgb, var(--sig) 10%, transparent); border-radius: 5px; padding: 2px 7px; white-space: nowrap; display: inline-block; }
+.more { font: inherit; font-size: 14px; font-weight: 500; padding: 8px 16px; border-radius: 8px; border: 1px solid var(--axis); background: var(--panel); color: var(--ink); cursor: pointer; justify-self: start;
   transition: background-color 120ms ease, scale 150ms ease-out; }
 .more:not(:disabled):active { scale: 0.96; }
 @media (hover: hover) and (pointer: fine) { .more:hover { background: var(--well); } }
 
-.file { position: sticky; top: 16px; display: grid; gap: 16px; background: var(--sheet); border: 1px solid transparent; border-radius: 10px; box-shadow: var(--shadow); padding: 18px 20px 20px; }
-.file h2 { font-size: 26px; line-height: 1.1; }
-.file .meta { font-size: 13px; color: var(--ink-2); }
-.file-figs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
-.file-figs div { padding: 10px 12px 12px; border-left: 1px solid var(--rule); display: grid; gap: 2px; align-content: start; }
-.file-figs div:first-child { border-left: 0; padding-left: 0; }
-.file-figs .v { font-size: 24px; font-weight: 600; line-height: 1.1; font-variant-numeric: tabular-nums; }
-.file-figs .d { font-size: 12px; color: var(--ink-2); }
-.reasons { padding-left: 18px; display: grid; gap: 6px; font-size: 14px; }
-.reasons li::marker { color: var(--sig); }
-.math { font-size: 13px; color: var(--ink-2); border-left: 2px solid var(--rule); padding-left: 10px; }
-.outcome { font-size: 14px; }
-.outcome b { font-variant-numeric: tabular-nums; }
+.file { position: sticky; top: 16px; padding: 20px 22px 22px; display: grid; gap: 16px; box-shadow: var(--lift); }
+.file h2 { font-size: 24px; line-height: 1.15; margin-top: 4px; }
+.file .meta { font-size: 13px; color: var(--ink-2); margin-top: 2px; }
+.figs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.figs > div { background: var(--well); border-radius: 10px; padding: 10px 12px 11px; display: grid; gap: 2px; align-content: start; }
+.figs > div.key { background: var(--col); }
+.figs .v { font-size: 24px; font-weight: 650; letter-spacing: -0.02em; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.figs .d { font-size: 12px; color: var(--ink-2); }
+.outcome { font-size: 14px; border-radius: 10px; padding: 11px 13px; background: var(--well); }
+.outcome b { font-weight: 650; }
+.reasons { list-style: none; padding: 0; display: grid; gap: 7px; font-size: 14px; }
+.reasons li { display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 8px; }
+.reasons li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--sig); margin: 8px 0 0 3px; }
+.math { font-size: 13px; color: var(--ink-2); padding-top: 12px; border-top: 1px dashed var(--rule); }
 
-.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--ink-2); }
+.legend { display: flex; gap: 6px 14px; flex-wrap: wrap; font-size: 12px; color: var(--ink-2); }
 .legend span { display: inline-flex; align-items: center; gap: 6px; }
 .key-sq { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
 .key-band { width: 16px; height: 10px; background: color-mix(in srgb, var(--s1) 16%, transparent); display: inline-block; border-radius: 2px; }
 .key-line { width: 16px; height: 0; border-top: 2px solid var(--ink); display: inline-block; }
 .chart { position: relative; }
 .chart svg { display: block; width: 100%; height: auto; overflow: visible; }
-.chart text { fill: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; paint-order: stroke; stroke: var(--halo, var(--paper)); stroke-width: 3px; stroke-linejoin: round; }
-.file .chart, .findings .chart { --halo: var(--sheet); }
-.tip { position: absolute; pointer-events: none; background: var(--paper); border: 1px solid transparent; border-radius: 8px;
-  box-shadow: var(--shadow); padding: 8px 10px; font-size: 13px; min-width: 150px; opacity: 0; transition: opacity 120ms ease; z-index: 2; }
+.chart text { fill: var(--muted); font-size: 12px; font-family: var(--sans); font-variant-numeric: tabular-nums; paint-order: stroke; stroke: var(--halo); stroke-width: 3px; stroke-linejoin: round; }
+.tip { position: absolute; pointer-events: none; background: var(--panel); border: 1px solid transparent; border-radius: 10px;
+  box-shadow: var(--lift); padding: 8px 10px; font-size: 13px; min-width: 150px; opacity: 0; transition: opacity 120ms ease; z-index: 2; }
 .tip.on { opacity: 1; }
 .tip .row { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
 details summary { cursor: pointer; font-size: 13px; color: var(--ink-2); width: fit-content; }
 table.plain { border-collapse: collapse; width: 100%; font-size: 14px; }
-table.plain th, table.plain td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--rule); }
-table.plain th { font-weight: 600; color: var(--muted); font-size: 12px; }
+table.plain th, table.plain td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--rule); }
+table.plain th { font-family: var(--mono); font-weight: 500; color: var(--muted); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; }
 table.plain th:first-child, table.plain td:first-child { padding-left: 0; }
-table.plain .r { text-align: right; font-variant-numeric: tabular-nums; }
-table.plain td.win { font-weight: 700; }
+table.plain .r { text-align: right; font-family: var(--mono); font-size: 13px; font-variant-numeric: tabular-nums; }
+table.plain th.r { font-size: 11px; }
+table.plain tr.best td { font-weight: 700; }
+table.plain tr.best td:first-child { box-shadow: inset 3px 0 0 var(--s1); padding-left: 10px; }
 
-/* findings */
-.findings { background: var(--sheet); border-top-width: 2px; padding: 18px 32px 40px; margin: 0 -32px; gap: 24px; }
-.pull { font-family: var(--serif); font-size: 28px; line-height: 1.2; max-width: 32ch; }
-.pull em { color: var(--sig); font-style: normal; }
-.lede { font-size: 16px; max-width: 72ch; color: var(--ink-2); }
-.findings h4 { margin: 0 0 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); }
-.findings ul { padding-left: 18px; display: grid; gap: 8px; }
-.findings li::marker { color: var(--sig); }
-.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; }
-.score { display: grid; gap: 0; border-top: 1px solid var(--rule); }
-.score > div { display: grid; grid-template-columns: 84px minmax(0, 1fr) auto; gap: 14px; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--rule); font-size: 14px; }
-.score .res { font-family: var(--mono); font-size: 13px; text-align: right; font-variant-numeric: tabular-nums; }
-.score .res small { display: block; font-family: var(--sans); color: var(--muted); font-size: 12px; }
-.verdict { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; border-radius: 3px; padding: 0 6px; line-height: 18px; width: fit-content; }
-.verdict.met { color: var(--s3); border: 1px solid color-mix(in srgb, var(--s3) 60%, transparent); }
-.verdict.miss { color: var(--sig); border: 1px solid color-mix(in srgb, var(--sig) 60%, transparent); }
-.note { font-size: 13px; color: var(--muted); }
-footer { padding: 22px 0 40px; font-size: 13px; color: var(--muted); }
+/* test report */
+.report { display: grid; gap: 20px; padding: 56px 0 24px; }
+.report-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: end; }
+.report-head h2 { font-size: 34px; line-height: 1.1; letter-spacing: -0.03em; margin-top: 8px; max-width: 22ch; }
+.report-head h2 em { font-style: normal; color: var(--sig); }
+.report-head p { font-size: 15px; color: var(--ink-2); }
+.grid12 { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 20px; }
+.span7 { grid-column: span 7; } .span5 { grid-column: span 5; } .span6 { grid-column: span 6; } .span12 { grid-column: span 12; }
+.card { padding: 18px 20px 20px; display: grid; gap: 12px; align-content: start; min-width: 0; }
+.card h3 { font-size: 16px; line-height: 1.3; }
+.criteria { display: grid; gap: 8px; }
+.crit { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 14px; align-items: center; padding: 11px 13px; border-radius: 10px; background: var(--well); }
+.crit .goal { font-size: 14px; }
+.crit .res { font-family: var(--mono); font-size: 13px; text-align: right; font-variant-numeric: tabular-nums; }
+.crit .sub { grid-column: 1 / -1; font-size: 12px; color: var(--ink-2); }
+.badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 650; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 2px; }
+.badge i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.badge.met { color: var(--s3); } .badge.met i { background: var(--s3); }
+.badge.miss { color: var(--sig); } .badge.miss i { background: var(--sig); }
+.list { padding-left: 18px; display: grid; gap: 9px; font-size: 14px; }
+.list li::marker { color: var(--muted); }
+.note { font-size: 12px; color: var(--muted); }
+footer { padding: 8px 0 40px; font-size: 13px; color: var(--muted); }
 .empty { padding: 40px 0; color: var(--ink-2); }
 
 /* first load only: sections arrive in order */
@@ -170,55 +191,51 @@ footer { padding: 22px 0 40px; font-size: 13px; color: var(--muted); }
 @keyframes rise { from { opacity: 0; transform: translateY(12px); filter: blur(4px); } }
 @keyframes fade { from { opacity: 0; } }
 
-@media (max-width: 1180px) {
-  .mast-in { grid-template-columns: minmax(0, 1fr); gap: 18px; }
-  .facts div:first-child { padding-left: 0; }
+@media (max-width: 1240px) {
+  .hero { grid-template-columns: minmax(0, 1fr); gap: 24px; }
   .desk { grid-template-columns: minmax(0, 1fr); }
   .file { position: static; }
   .hide-md { display: none; }
+  .span7, .span5 { grid-column: span 12; }
 }
 @media (max-width: 760px) {
-  .wrap { padding: 0 18px; }
-  .mast-in { padding-top: 22px; padding-bottom: 18px; }
-  .mast h1 { font-size: 32px; }
-  .deck { font-size: 17px; }
-  .facts { grid-auto-flow: row; grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .facts div { padding: 0 10px; }
-  .facts dd { font-size: 20px; }
-  .facts dd small { display: block; font-size: 12px; }
+  .wrap { padding: 0 16px; }
+  .bar .label, .crumb .opt { display: none; }
+  .hero { padding: 26px 0 22px; }
+  .hero h1 { font-size: 32px; }
+  .kpis { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .kpi { grid-template-columns: minmax(0, 1fr) auto; column-gap: 12px; }
+  .kpi .label, .kpi .cmp { grid-column: 1 / -1; }
+  .kpi .v { font-size: 26px; }
+  .sheet, .file, .card { padding: 16px 14px 18px; }
   .totals { grid-template-columns: 1fr 1fr; }
-  .tot:nth-child(3) { border-left: 0; padding-left: 0; }
+  .tot:nth-child(3)::before { display: none; }
   .tot:nth-child(n+3) { border-top: 1px solid var(--rule); }
-  .tot { padding: 10px 12px 12px; }
-  .tot .v { font-size: 22px; }
+  .tot .v { font-size: 20px; }
   .hide-sm { display: none; }
   input[type=search] { width: 100%; }
   .tools select { flex: 1; }
-  .file { padding: 16px 14px 18px; }
-  .file-figs .v { font-size: 20px; }
-  .file-figs div { padding: 8px 8px 10px; }
-  .two { grid-template-columns: minmax(0, 1fr); gap: 28px; }
-  .findings { margin: 0 -18px; padding: 16px 18px 32px; }
-  .pull { font-size: 23px; }
-  .score > div { grid-template-columns: 70px minmax(0, 1fr); }
-  .score .res { grid-column: 2; text-align: left; }
+  .figs .v { font-size: 20px; }
+  .figs > div { padding: 8px 9px 9px; }
+  .report { padding-top: 36px; }
+  .report-head { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .report-head h2 { font-size: 26px; }
+  .grid12 { gap: 12px; }
+  .span6 { grid-column: span 12; }
 }
 </style>
 </head>
 <body>
-<header class="mast">
-  <div class="wrap mast-in">
-    <div>
-      <p class="kicker" id="kicker">Case study</p>
-      <h1>Shelf Signal</h1>
-      <p class="deck">Order for what a mistake costs, not for what sold last month.</p>
-    </div>
-    <dl class="facts" id="facts"></dl>
+<header class="bar">
+  <div class="wrap bar-in">
+    <span class="mark" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span class="brand">Shelf Signal</span>
+    <span class="crumb"><span id="crumb">Monthly order sheet</span></span>
+    <span class="label">Case study</span>
   </div>
 </header>
-<div class="wrap"><div class="page" id="page"><p class="empty">Loading data…</p></div></div>
+<div class="wrap" id="app"><p class="empty">Loading data…</p></div>
 <footer class="wrap" id="foot"></footer>
-
 <script>
 const $ = (s, el = document) => el.querySelector(s);
 const el = (tag, attrs = {}, ...kids) => {
@@ -241,8 +258,9 @@ const addMonths = (m, n) => { const d = new Date(m + "-01T12:00"); d.setMonth(d.
 const DEPT = { FOODS: "Food", HOUSEHOLD: "Household", HOBBIES: "Hobbies" };
 const deptName = d => { const [c, n] = d.split("_"); return `${DEPT[c]} ${n}`; };
 const itemName = it => `${deptName(it.dept)}, item ${it.id.split("_").pop()}`;
+const reduce = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-const PAGE = () => innerWidth <= 760 ? 10 : 40;
+const PAGE = () => innerWidth <= 760 ? 10 : 25;
 let D, M, current, shown = PAGE(), policy = "cost";
 const POLICIES = {
   cost: { label: "Cost-based", note: "Each product is stocked to cover demand in the share of months its costs justify: food closer to the forecast, because leftovers may spoil; products that keep, well above it." },
@@ -257,53 +275,66 @@ function result(it, q) {
   return { short, extra, cost: short * it.price * c.margin + extra * it.unit_cost * c.extra };
 }
 
-function renderFacts() {
+/* ---------- hero ---------- */
+function hero() {
   const o = M.overall, tot = k => o[k].short_cost + o[k].extra_cost;
-  const fact = (dt, dd, sm) => el("div", {}, el("dt", { text: dt }), el("dd", {}, dd, sm ? el("small", { text: " " + sm }) : null));
-  $("#facts").replaceChildren(
-    fact("Cost of mistakes, 12 test months", usd(tot("model")), `vs ${usd(tot("last"))}`),
-    fact("Demand met", pct(o.model.fill_rate), `vs ${pct(o.last.fill_rate)}`),
-    fact("Stock carried", spct(o.model.stock_value / o.last.stock_value - 1), "more"));
+  const cmp = (rows, max, fmt) => el("div", { class: "cmp" }, ...rows.map(([name, v, color]) =>
+    el("div", {}, el("span", { text: name }), el("span", { class: "t" }, el("i", { style: `width:${(v / max) * 100}%;background:${color}` })), el("b", { text: fmt(v) }))));
+  const kpi = (label, v, rows, max, fmt, aria) => el("div", { class: "kpi panel", role: "group", "aria-label": aria },
+    el("p", { class: "label", text: label }), el("p", { class: "v", text: v }), cmp(rows, max, fmt));
+  const a = [tot("model"), tot("last")], f = [o.model.fill_rate, o.last.fill_rate], s = [o.model.stock_value / 12, o.last.stock_value / 12];
+  return el("section", { class: "hero", id: "hero" },
+    el("div", {},
+      el("p", { class: "label", text: `Case study · Walmart store ${D.store} · M5 data` }),
+      el("h1", {}, "Order for what a mistake costs, ", el("em", { text: "not for what sold last month." })),
+      el("p", { class: "lede", text: `A monthly order sheet for a store with ${int(D.items.length)} products. Tested on 12 months it never saw, against the rule most small stores use.` })),
+    el("div", { class: "kpis" },
+      kpi("Cost of mistakes", usd(a[0]), [["This sheet", a[0], "var(--s1)"], ["Last month", a[1], "var(--sig)"]], Math.max(...a), usd,
+        `Cost of mistakes: ${usd(a[0])} with this sheet, ${usd(a[1])} ordering last month's sales`),
+      kpi("Demand met from stock", pct(f[0]), [["This sheet", f[0], "var(--s1)"], ["Last month", f[1], "var(--sig)"]], 1, v => pct(v),
+        `Demand met: ${pct(f[0])} with this sheet, ${pct(f[1])} ordering last month's sales`),
+      kpi("Stock on the shelf", spct(s[0] / s[1] - 1), [["This sheet", s[0], "var(--s1)"], ["Last month", s[1], "var(--sig)"]], Math.max(...s), usd,
+        `Average stock: ${usd(s[0])} with this sheet, ${usd(s[1])} ordering last month's sales`)));
 }
 
+/* ---------- order sheet ---------- */
 function sorted(f) {
-  const q = f.q.trim().toLowerCase(), dept = f.dept, sort = f.sort;
-  let rows = D.items.filter(it => (!dept || it.dept === dept) && (!q || it.id.toLowerCase().includes(q) || itemName(it).toLowerCase().includes(q)));
-  const val = it => qOf(it) * it.unit_cost;
-  const chg = it => qOf(it) - it.last;
-  rows.sort(sort === "value" ? (a, b) => val(b) - val(a)
-    : sort === "change" ? (a, b) => Math.abs(chg(b)) * b.unit_cost - Math.abs(chg(a)) * a.unit_cost
+  const q = f.q.trim().toLowerCase();
+  const rows = D.items.filter(it => (!f.dept || it.dept === f.dept) && (!q || it.id.toLowerCase().includes(q) || itemName(it).toLowerCase().includes(q)));
+  const val = it => qOf(it) * it.unit_cost, chg = it => qOf(it) - it.last;
+  rows.sort(f.sort === "value" ? (a, b) => val(b) - val(a)
+    : f.sort === "change" ? (a, b) => Math.abs(chg(b)) * b.unit_cost - Math.abs(chg(a)) * a.unit_cost
     : (a, b) => lastOos(b) - lastOos(a) || val(b) - val(a));
   return rows;
 }
 
-function renderSheet(first = false) {
-  const page = $("#page");
-  const prev = { q: $("#q")?.value || "", dept: $("#dept")?.value || "", sort: $("#sort")?.value || "value" };
+function sheet(prev) {
   const rows = sorted(prev);
-  const all = D.items.map(it => ({ q: qOf(it), it }));
-  const value = all.reduce((s, r) => s + r.q * r.it.unit_cost, 0);
+  const value = D.items.reduce((s, it) => s + qOf(it) * it.unit_cost, 0);
   const lastValue = D.items.reduce((s, it) => s + it.order_last * it.unit_cost, 0);
-  const res = all.reduce((s, r) => { const x = result(r.it, r.q); s.cost += x.cost; s.short += x.short; s.dem += r.it.actual_demand; return s; }, { cost: 0, short: 0, dem: 0 });
+  const res = D.items.reduce((s, it) => { const x = result(it, qOf(it)); s.cost += x.cost; s.short += x.short; s.dem += it.actual_demand; return s; }, { cost: 0, short: 0, dem: 0 });
   const resLast = D.items.reduce((s, it) => s + result(it, it.order_last).cost, 0);
+  const mon = monthName(D.asof).split(" ")[0];
 
-  const sheet = el("section", { class: "sec" },
-    el("div", { class: "sec-label" }, el("b", { text: "01" }), el("span", { class: "kicker", text: "Order sheet" })),
-    el("h3", { text: `What to stock for ${monthName(D.asof, true)}, made on the last day of ${monthName(addMonths(D.asof, -1), true).split(" ")[0]}` }));
   const seg = el("div", { class: "seg", role: "group", "aria-label": "Stock policy" },
     ...Object.entries(POLICIES).map(([k, p]) => {
       const b = el("button", { "aria-pressed": String(k === policy), text: p.label });
-      b.onclick = () => { policy = k; renderSheet(); };
+      b.onclick = () => { policy = k; render(); };
       return b;
     }));
-  sheet.append(el("div", { class: "tools" }, seg), el("p", { class: "policy-note", text: POLICIES[policy].note }));
+  const card = el("section", { class: "sheet panel", id: "sheet", "aria-label": "Order sheet" },
+    el("div", { class: "panel-head" },
+      el("div", {}, el("p", { class: "label", text: "Order sheet" }),
+        el("h2", { text: `${monthName(D.asof, true)}, set on the last day of ${monthName(addMonths(D.asof, -1), true).split(" ")[0]}` })),
+      seg),
+    el("p", { class: "policy-note", text: POLICIES[policy].note }));
 
-  const tot = (k, v, d) => el("div", { class: "tot" }, el("p", { class: "kicker", text: k }), el("p", { class: "v", text: v }), el("p", { class: "d", text: d }));
-  sheet.append(el("div", { class: "totals" },
-    tot("Stock value", usd(value), policy === "last" ? "At cost" : `${spct(value / lastValue - 1)} against last month's sales`),
+  const tot = (k, v, d) => el("div", { class: "tot" }, el("p", { class: "label", text: k }), el("p", { class: "v", text: v }), el("p", { class: "d", text: d }));
+  card.append(el("div", { class: "totals" },
+    tot("Stock value", usd(value), policy === "last" ? "at cost" : `${spct(value / lastValue - 1)} against last month's sales`),
     tot("Products", int(D.items.length), `${int(D.items.filter(it => qOf(it) > 0).length)} with an order`),
-    tot(`How ${monthName(D.asof).split(" ")[0]} went`, pct(1 - res.short / res.dem), "of demand met from stock"),
-    tot("Cost of mistakes", usd(res.cost), policy === "last" ? "Lost profit plus overstock" : `vs ${usd(resLast)} ordering last month's sales`)));
+    tot(`How ${mon} went`, pct(1 - res.short / res.dem), "of demand met from stock"),
+    tot("Cost of mistakes", usd(res.cost), policy === "last" ? "lost profit plus overstock" : `vs ${usd(resLast)} ordering last month's sales`)));
 
   const tools = el("div", { class: "tools" },
     el("input", { type: "search", id: "q", placeholder: "Search a product, e.g. 090", "aria-label": "Search products" }),
@@ -314,69 +345,62 @@ function renderSheet(first = false) {
       el("option", { value: "change", text: "Biggest change from last month" }),
       el("option", { value: "oos", text: "Most days out of stock last month" })));
   tools.querySelector("#q").value = prev.q; tools.querySelector("#dept").value = prev.dept; tools.querySelector("#sort").value = prev.sort;
+  card.append(tools);
 
-  const table = el("table", { class: "ledger", "aria-label": "Order sheet" },
+  const table = el("table", { class: "ledger", "aria-label": `Orders for ${monthName(D.asof, true)}` },
     el("thead", {}, el("tr", {},
-      el("th", { text: "Product" }), el("th", { class: "r hide-sm", text: "Sold last month" }), el("th", { class: "r hide-md", text: "Forecast" }),
-      el("th", { class: "r", text: "Order" }), el("th", { class: "r", text: "Change" }), el("th", { class: "r hide-sm", text: "Order value" }),
+      el("th", { text: "Product" }), el("th", { class: "r hide-sm", text: "Sold last mo." }), el("th", { class: "r hide-md", text: "Forecast" }),
+      el("th", { class: "r oc", text: "Order" }), el("th", { class: "r", text: "Change" }), el("th", { class: "r hide-sm", text: "Value" }),
       el("th", { class: "hide-md", text: "Last month" }))));
   const tb = el("tbody");
-  const list = rows.slice(0, shown);
-  for (const it of list) {
+  for (const it of rows.slice(0, shown)) {
     const q = qOf(it), ch = q - it.last, oos = lastOos(it);
     const cell = (cls, ...k) => el("td", { class: cls }, el("span", {}, ...k));
     const tr = el("tr", { "aria-selected": String(it === current), tabindex: 0 },
       cell("", el("span", { class: "pid" }, itemName(it), el("small", { text: it.id }))),
       cell("r fig hide-sm", int(it.last)),
       cell("r fig hide-md", it.forecast.toFixed(0)),
-      cell("r fig order", int(q)),
+      cell("r fig order oc", int(q)),
       cell("r fig " + (ch > 0 ? "up" : ch < 0 ? "down" : ""), ch === 0 ? "0" : (ch > 0 ? "+" : "-") + int(Math.abs(ch))),
       cell("r fig hide-sm", usd(q * it.unit_cost)),
-      cell("hide-md", oos >= 3 ? el("span", { class: "tag warn", text: `Out of stock ${oos}d` }) : null, " ",
-        null));
-    const pick = () => { current = it; history.replaceState(null, "", "#" + it.id); renderSheet(); if (innerWidth <= 1180) $("#file").scrollIntoView({ block: "start", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); };
+      cell("hide-md", oos >= 3 ? el("span", { class: "flag", text: `Out of stock ${oos} days` }) : null));
+    const pick = () => {
+      current = it; history.replaceState(null, "", "#" + it.id); render();
+      if (innerWidth <= 1240) $("#file").scrollIntoView({ block: "start", behavior: reduce() ? "auto" : "smooth" });
+    };
     tr.onclick = pick;
     tr.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); } };
     tb.append(tr);
   }
   table.append(tb);
-  const left = el("div", { style: "display:grid;gap:12px;align-content:start;min-width:0" }, tools, el("div", { style: "overflow-x:auto" }, table),
-    rows.length ? el("p", { class: "small", text: `Showing ${Math.min(shown, rows.length)} of ${int(rows.length)} products.` }) : el("p", { class: "small", text: "No products match." }));
+  card.append(el("div", { style: "overflow-x:auto" }, table),
+    el("p", { class: "small", text: rows.length ? `Showing ${Math.min(shown, rows.length)} of ${int(rows.length)} products.` : "No products match." }));
   if (rows.length > shown) {
     const more = el("button", { class: "more", text: `Show ${PAGE()} more` });
-    more.onclick = () => { shown += PAGE(); renderSheet(); };
-    left.append(more);
+    more.onclick = () => { shown += PAGE(); render(); };
+    card.append(more);
   }
-  sheet.append(el("div", { class: "desk" }, left, current ? fileCard(current) : el("div")));
-
-  const focusId = document.activeElement?.id;
-  page.classList.toggle("enter", first);
-  page.replaceChildren(sheet, findingsCard());
-  if (focusId && $("#" + focusId)) { const f = $("#" + focusId); f.focus(); if (f.setSelectionRange && f.type === "search") f.setSelectionRange(f.value.length, f.value.length); }
-  $("#q").oninput = () => { shown = PAGE(); renderSheet(); };
-  $("#dept").oninput = () => { shown = PAGE(); renderSheet(); };
-  $("#sort").oninput = () => { shown = PAGE(); renderSheet(); };
-  if (first) setTimeout(() => page.classList.remove("enter"), 1000);
+  return card;
 }
 
+/* ---------- product file ---------- */
 function fileCard(it) {
   const c = M.costs[it.cat], q = qOf(it), r = result(it, q);
-  const mName = monthName(D.asof).split(" ")[0];
-  const card = el("article", { class: "file", id: "file", "aria-label": "Product file" },
-    el("div", {}, el("p", { class: "kicker", text: `Product file · ${deptName(it.dept)}` }), el("h2", { text: itemName(it) }),
-      el("p", { class: "meta", text: `${it.id} · $${it.price.toFixed(2)} each · about $${it.unit_cost.toFixed(2)} to buy${it.tier === "A" ? " · top seller" : ""}` })));
-  card.append(el("div", { class: "file-figs" },
-    el("div", {}, el("p", { class: "kicker", text: "Forecast" }), el("p", { class: "v", text: it.forecast.toFixed(0) }), el("p", { class: "d", text: `likely ${int(it.low)} to ${int(it.high)}` })),
-    el("div", {}, el("p", { class: "kicker", text: "Order" }), el("p", { class: "v", text: int(q) }), el("p", { class: "d", text: `sold ${int(it.last)} last month` })),
-    el("div", {}, el("p", { class: "kicker", text: "Actual demand" }), el("p", { class: "v", text: it.actual_demand.toFixed(0) }),
-      el("p", { class: "d", text: it.oos_days ? `sold ${int(it.actual_sales)}, out about ${it.oos_days}d` : `sold ${int(it.actual_sales)}` }))));
-  card.append(chart(it, q));
+  const mon = monthName(D.asof).split(" ")[0];
+  const card = el("article", { class: "file panel", id: "file", "aria-label": "Product file" },
+    el("div", {}, el("p", { class: "label", text: `Product file · ${deptName(it.dept)}` }), el("h2", { text: itemName(it) }),
+      el("p", { class: "meta", text: `${it.id} · $${it.price.toFixed(2)} each · about $${it.unit_cost.toFixed(2)} to buy${it.tier === "A" ? " · top seller" : ""}` })),
+    el("div", { class: "figs" },
+      el("div", {}, el("p", { class: "label", text: "Forecast" }), el("p", { class: "v", text: it.forecast.toFixed(0) }), el("p", { class: "d", text: `likely ${int(it.low)} to ${int(it.high)}` })),
+      el("div", { class: "key" }, el("p", { class: "label", text: "Order" }), el("p", { class: "v", text: int(q) }), el("p", { class: "d", text: `sold ${int(it.last)} last month` })),
+      el("div", {}, el("p", { class: "label", text: "Real demand" }), el("p", { class: "v", text: it.actual_demand.toFixed(0) }),
+        el("p", { class: "d", text: it.oos_days ? `sold ${int(it.actual_sales)}, out ${it.oos_days} days` : `sold ${int(it.actual_sales)}` }))),
+    el("div", { class: "chart-slot" }));
   const out = r.short >= 0.5 ? `Short by about ${r.short.toFixed(0)}, costing about ${usd(r.short * it.price * c.margin)} in lost profit.`
     : r.extra >= 0.5 ? `${r.extra.toFixed(0)} left over, costing about ${usd(r.extra * it.unit_cost * c.extra)} to carry.` : "Stock matched demand.";
-  const lastR = result(it, it.order_last);
-  card.append(el("p", { class: "outcome" }, el("b", { text: `How ${mName} went: ` }), out,
-    policy !== "last" ? ` Ordering last month's sales would have cost ${usd(lastR.cost)}.` : ""));
-  if (policy !== "last") card.append(el("div", {}, el("h4", { class: "kicker", style: "margin:0 0 6px", text: "Why this order" }),
+  card.append(el("p", { class: "outcome" }, el("b", { text: `How ${mon} went. ` }), out,
+    policy !== "last" ? ` Ordering last month's sales would have cost ${usd(result(it, it.order_last).cost)}.` : ""));
+  if (policy !== "last") card.append(el("div", { style: "display:grid;gap:8px" }, el("p", { class: "label", text: "Why this order" }),
     el("ul", { class: "reasons" }, ...(policy === "cost" ? it.reasons : it.reasons.filter(t => !/^(Food:|Keeps on)/.test(t))).map(t => el("li", { text: t })),
       policy === "lean" ? el("li", { text: "Lean setting: stocked to cover demand in 3 of 10 months" }) : null)));
   if (policy === "cost") card.append(el("p", { class: "math", text:
@@ -384,11 +408,88 @@ function fileCard(it) {
   return card;
 }
 
-function chart(it, q) {
+/* ---------- test report ---------- */
+function report() {
+  const o = M.overall, tot = k => o[k].short_cost + o[k].extra_cost, acc = M.accuracy, ss = M.same_stock.last;
+  const A = M.by_tier.A.model.fill_rate, lift = M.stockouts.demand / M.stockouts.sales - 1;
+  const stockUp = o.model.stock_value / o.last.stock_value - 1;
+  const best = Math.min(...Object.keys(M.rules).map(tot));
+
+  const crit = (ok, goal, res, sub) => el("div", { class: "crit" },
+    el("div", {}, el("span", { class: "badge " + (ok ? "met" : "miss") }, el("i", { "aria-hidden": "true" }), ok ? "Met" : "Not met"), el("p", { class: "goal", text: goal })),
+    el("span", { class: "res", text: res }), el("p", { class: "sub", text: sub }));
+  const criteria = el("section", { class: "card panel span5", id: "criteria" },
+    el("p", { class: "label", text: "Set before testing" }), el("h3", { text: "Success criteria: two met, two missed" }),
+    el("div", { class: "criteria" },
+      crit(tot("model") < tot("last"), "Lower total cost of mistakes", `${usd(tot("model"))} vs ${usd(tot("last"))}`, `${spct(tot("model") / tot("last") - 1)} against ordering last month's sales`),
+      crit(Math.abs(acc.bias_model) <= 0.05, "Total forecast within 5% of demand", spct(acc.bias_model, 1), `Ordering last month's sales: ${spct(acc.bias_last, 1)}`),
+      crit(A >= 0.95, "Top sellers: 95% of demand met", pct(A, 1), `Ordering last month's sales: ${pct(M.by_tier.A.last.fill_rate, 1)}`),
+      crit(stockUp <= 0, "No more stock than today", spct(stockUp), "The Lean setting holds stock near today's level")));
+
+  const frontier = el("section", { class: "card panel span7", id: "frontier" },
+    el("p", { class: "label", text: "Stock against mistakes" }), el("h3", { text: "At every stock level, the model loses less than the simple rules" }),
+    el("div", { class: "frontier-slot" }),
+    el("p", { class: "note", text: "Lower is better. The blue line is the model with one setting for every product, from lean to generous. The cost-based model sets each product separately, and does better still." }));
+
+  const rules = el("section", { class: "card panel span12", id: "rules" },
+    el("p", { class: "label", text: `Backtest · ${monthName(M.test[0])} to ${monthName(M.test[1])}` }), el("h3", { text: "Every rule, scored in dollars" }),
+    el("div", { style: "overflow-x:auto" }, el("table", { class: "plain" },
+      el("thead", {}, el("tr", {}, el("th", { text: "Rule" }), el("th", { class: "r hide-sm", text: "Lost profit" }), el("th", { class: "r hide-sm", text: "Overstock" }),
+        el("th", { class: "r", text: "Total" }), el("th", { class: "r", text: "Demand met" }), el("th", { class: "r", text: "Stock" }))),
+      el("tbody", {}, ...Object.entries(M.rules).map(([k, n]) => el("tr", { class: tot(k) === best ? "best" : "" },
+        el("td", { text: k === "model" ? "Cost-based model (this sheet)" : n }), el("td", { class: "r hide-sm", text: usd(o[k].short_cost) }), el("td", { class: "r hide-sm", text: usd(o[k].extra_cost) }),
+        el("td", { class: "r", text: usd(tot(k)) }), el("td", { class: "r", text: pct(o[k].fill_rate) }),
+        el("td", { class: "r", text: k === "last" ? "baseline" : spct(o[k].stock_value / o.last.stock_value - 1) })))))),
+    el("p", { class: "note", text: "Scored against estimated demand: recorded sales plus the sales likely missed while a product was out of stock." }));
+
+  const found = el("section", { class: "card panel span6", id: "found" },
+    el("p", { class: "label", text: "What we found" }), el("h3", { text: "Empty shelves hide demand" }),
+    el("ul", { class: "list" },
+      el("li", { text: `Zero-sales streaks too long to be chance suggest this store missed about ${pct(lift)} more sales than it recorded.` }),
+      el("li", { text: `A model trained on recorded sales learns those empty shelves: its forecasts ran ${pct(Math.abs(acc.bias_model_sales))} low. Trained on estimated demand, ${pct(Math.abs(acc.bias_model), 1)} low.` }),
+      el("li", { text: `At the same stock as today, the model cut the cost of mistakes by ${pct(1 - ss.model_total / ss.rule_total)}. The rest of the gain comes from carrying more of what is cheap to keep and costly to run out of.` }),
+      el("li", { text: `Top sellers had ${pct(A, 1)} of demand met, just short of 95%, and the cost-based rule carries ${pct(stockUp)} more stock than today.` })));
+  const changed = el("section", { class: "card panel span6", id: "changed" },
+    el("p", { class: "label", text: "What we changed" }), el("h3", { text: "The order is not the forecast" }),
+    el("ul", { class: "list" },
+      el("li", { text: "Each product is stocked to the level its costs justify, and the sheet says why in plain words." }),
+      el("li", { text: "A Lean setting for owners who cannot carry more stock. It stays near today's stock and still costs less than ordering last month's sales." }),
+      el("li", { text: "Forecasts learn from estimated demand, not recorded sales, so a stockout does not shrink the next order." }),
+      el("li", { text: "Next: a higher stock floor for top sellers to reach 95%, and real unit costs from the store's invoices." })),
+    el("details", {}, el("summary", { text: "Cost assumptions (the data has no unit costs)" }),
+      el("div", { style: "overflow-x:auto;margin-top:8px" }, el("table", { class: "plain" },
+        el("thead", {}, el("tr", {}, el("th", { text: "Department" }), el("th", { class: "r", text: "Profit per sale" }), el("th", { class: "r", text: "Leftover, per month" }), el("th", { class: "r", text: "Cover" }))),
+        el("tbody", {}, ...Object.entries(M.costs).map(([k, c]) => el("tr", {}, el("td", { text: `${DEPT[k]}: ${c.why}` }),
+          el("td", { class: "r", text: pct(c.margin) + " of price" }), el("td", { class: "r", text: pct(c.extra) + " of cost" }), el("td", { class: "r", text: pct(c.cr) }))))))));
+
+  return el("section", { class: "report", id: "report", "aria-label": "Test report" },
+    el("div", { class: "report-head" },
+      el("div", {}, el("p", { class: "label", text: "Test report" }),
+        el("h2", {}, "A better forecast helped. ", el("em", { text: "Knowing what each mistake costs helped more." }))),
+      el("p", { text: `Each month from ${monthName(M.test[0])} to ${monthName(M.test[1])}, models learned only from earlier months and set a stock level for all ${int(M.products)} products. Every rule was scored in dollars: profit lost when the shelf ran out, plus the cost of stock left over.` })),
+    el("div", { class: "grid12" }, frontier, criteria, rules, found, changed));
+}
+
+/* ---------- page ---------- */
+function render(first = false) {
+  const app = $("#app");
+  const prev = { q: $("#q")?.value || "", dept: $("#dept")?.value || "", sort: $("#sort")?.value || "value" };
+  const focusId = document.activeElement?.id;
+  app.classList.toggle("enter", first);
+  app.replaceChildren(hero(), el("div", { class: "desk", id: "desk" }, sheet(prev), current ? fileCard(current) : el("div")), report());
+  // charts are drawn at the width they really get
+  const fs = $(".chart-slot"); if (fs) fs.replaceWith(chart(current, qOf(current), Math.max(280, fs.clientWidth)));
+  const fr = $(".frontier-slot"); fr.replaceWith(frontierChart(Math.max(300, fr.clientWidth)));
+  if (focusId && $("#" + focusId)) { const f = $("#" + focusId); f.focus(); if (f.type === "search") f.setSelectionRange(f.value.length, f.value.length); }
+  $("#q").oninput = $("#dept").oninput = $("#sort").oninput = () => { shown = PAGE(); render(); };
+  if (first) setTimeout(() => app.classList.remove("enter"), 1000);
+}
+
+function chart(it, q, W) {
   const months = []; for (let i = -12; i <= 0; i++) months.push(addMonths(D.asof, i));
   const byM = Object.fromEntries(it.history.map(h => [h.m, h]));
-  // draw at the real width so text stays 12px on phones
-  const W = innerWidth > 1180 ? 430 : Math.max(300, Math.min(700, $("#page").clientWidth - 30)), H = 200, L = 34, R = 8, T = 12, B = 26;
+  // W is the real width, so text stays 12px on phones
+  const H = W < 420 ? 190 : 210, L = 34, R = 8, T = 12, B = 26;
   const vals = months.map(m => byM[m] ? Math.max(byM[m].d, byM[m].s) : 0);
   const ymax = Math.max(...vals, it.high, q, 1) * 1.1;
   const step = niceStep(ymax / 4), top = Math.ceil(ymax / step) * step;
@@ -444,7 +545,7 @@ function chart(it, q) {
     el("th", { class: "r", text: "Est. demand" }), el("th", { class: "r", text: "Days out" }))),
     el("tbody", {}, ...months.map(m => { const h = byM[m]; return el("tr", {}, el("td", { text: monthName(m) }),
       el("td", { class: "r", text: h ? int(h.s) : "" }), el("td", { class: "r", text: h ? h.d.toFixed(0) : "" }), el("td", { class: "r", text: h ? h.o : "" })); })));
-  return el("div", { style: "display:grid;gap:8px" },
+  return el("div", { style: "display:grid;gap:10px" },
     el("div", { class: "legend" },
       el("span", {}, el("i", { class: "key-sq", style: "background:var(--s1)" }), "Sold"),
       el("span", {}, el("i", { class: "key-sq", style: "background:var(--sig)" }), "Missed while out of stock (estimated)"),
@@ -459,7 +560,7 @@ function niceStep(x) {
   return (r <= 1 ? 1 : r <= 2 ? 2 : r <= 5 ? 5 : 10) * p;
 }
 
-function frontierChart() {
+function frontierChart(W) {
   const o = M.overall, tot = k => o[k].short_cost + o[k].extra_cost, per = v => v / 12;
   const fr = M.frontier.map(f => ({ x: per(f.stock_value), y: f.short_cost + f.extra_cost, c: f.cover }));
   const pts = [
@@ -467,7 +568,7 @@ function frontierChart() {
     { k: "buffer", x: per(o.buffer.stock_value), y: tot("buffer"), label: "Last month +20%", c: "var(--sig)" },
     { k: "model", x: per(o.model.stock_value), y: tot("model"), label: "Cost-based model", c: "var(--s1)" },
   ];
-  const W = innerWidth <= 760 ? Math.max(300, innerWidth - 36) : Math.min(668, ($("#page").clientWidth - 40) / 2), H = W < 500 ? 240 : 300, L = 54, R = 16, T = 14, B = 40;
+  const H = W < 500 ? 250 : 320, L = 54, R = 16, T = 14, B = 40;
   const xs = [...fr, ...pts].map(p => p.x), ys = [...fr, ...pts].map(p => p.y);
   const x0 = Math.min(...xs) * 0.95, x1 = Math.max(...xs) * 1.02;
   const ystep = niceStep(Math.max(...ys) / 4), ytop = Math.ceil(Math.max(...ys) * 1.05 / ystep) * ystep;
@@ -489,81 +590,25 @@ function frontierChart() {
   lt.textContent = "Model, one setting for all products";
   if (W >= 500) svg.append(lt);  // on phones the note under the chart names the line
   pts.forEach(p => {
-    svg.append(svgEl("circle", { cx: x(p.x), cy: y(p.y), r: 6, fill: p.c, stroke: "var(--sheet)", "stroke-width": 2 }));
+    svg.append(svgEl("circle", { cx: x(p.x), cy: y(p.y), r: 6, fill: p.c, stroke: "var(--panel)", "stroke-width": 2 }));
     const t = svgEl("text", { x: x(p.x) + 11, y: y(p.y) + (p.k === "model" ? 18 : 4), "text-anchor": "start", style: `fill:var(--ink);font-weight:${p.k === "model" ? 700 : 500}` });
     t.textContent = p.label; svg.append(t);
   });
-  return el("div", { class: "chart", style: "max-width:720px" }, svg);
-}
-
-function findingsCard() {
-  const o = M.overall, tot = k => o[k].short_cost + o[k].extra_cost, acc = M.accuracy, ss = M.same_stock.last;
-  const A = M.by_tier.A.model.fill_rate;
-  const lift = M.stockouts.demand / M.stockouts.sales - 1;
-  const card = el("section", { class: "sec findings" },
-    el("div", { class: "sec-label" }, el("b", { text: "02" }), el("span", { class: "kicker", text: "What we tested" })),
-    el("p", { class: "pull" }, "A better forecast helped. ", el("em", { text: "Knowing what each mistake costs helped more." })),
-    el("p", { class: "lede", text: `The question: can a small store order better than “whatever sold last month”? Each month from ${monthName(M.test[0])} to ${monthName(M.test[1])}, models learned only from earlier months and set a stock level for every product in one Walmart store (${int(M.products)} products). Each rule was scored in dollars: profit lost when the shelf ran out, plus the cost of stock left over.` }));
-
-  const best = Math.min(...Object.keys(M.rules).map(tot));
-  const rulesTable = el("table", { class: "plain" },
-    el("thead", {}, el("tr", {}, el("th", { text: "Rule, 12 test months" }), el("th", { class: "r hide-sm", text: "Lost profit" }), el("th", { class: "r hide-sm", text: "Overstock" }),
-      el("th", { class: "r", text: "Total" }), el("th", { class: "r", text: "Demand met" }), el("th", { class: "r", text: "Stock carried" }))),
-    el("tbody", {}, ...Object.entries(M.rules).map(([k, n]) => el("tr", {},
-      el("td", { text: k === "model" ? "Cost-based model (this page)" : n }), el("td", { class: "r hide-sm", text: usd(o[k].short_cost) }), el("td", { class: "r hide-sm", text: usd(o[k].extra_cost) }),
-      el("td", { class: "r" + (tot(k) === best ? " win" : ""), text: usd(tot(k)) }), el("td", { class: "r", text: pct(o[k].fill_rate) }),
-      el("td", { class: "r", text: k === "last" ? "baseline" : spct(o[k].stock_value / o.last.stock_value - 1) })))));
-
-  const crit = (ok, goal, res, sub) => el("div", {}, el("span", { class: "verdict " + (ok ? "met" : "miss"), text: ok ? "Met" : "Not met" }),
-    el("span", { text: goal }), el("span", { class: "res" }, res, sub ? el("small", { text: sub }) : null));
-  const stockUp = o.model.stock_value / o.last.stock_value - 1;
-  const score = el("div", { class: "score" },
-    crit(tot("model") < tot("last"), "Lower total cost of mistakes than ordering last month's sales", `${usd(tot("model"))} vs ${usd(tot("last"))}`, spct(tot("model") / tot("last") - 1)),
-    crit(Math.abs(acc.bias_model) <= 0.05, "No steady lean: total forecast within 5% of total demand", spct(acc.bias_model, 1), `last month's sales: ${spct(acc.bias_last, 1)}`),
-    crit(A >= 0.95, "Top sellers: at least 95% of demand met from stock", pct(A, 1), `last month's sales: ${pct(M.by_tier.A.last.fill_rate, 1)}`),
-    crit(stockUp <= 0, "Stock carried no higher than today", spct(stockUp), "at today's stock, see the Lean setting"));
-
-  card.append(
-    el("div", { class: "two" },
-      el("div", { style: "display:grid;gap:10px;align-content:start" }, el("h4", { text: "Stock carried against the cost of mistakes" }), frontierChart(),
-        el("p", { class: "note", text: "Lower is better. The blue line is the model with one setting for every product, from lean to generous; each dot is one setting. It sits below both simple rules at every stock level. The cost-based model sets each product separately, and does better still." })),
-      el("div", { style: "display:grid;gap:10px;align-content:start" }, el("h4", { text: "The success criteria we set before testing" }), score)),
-    el("div", { style: "overflow-x:auto" }, rulesTable),
-    el("p", { class: "note", text: "Scored against estimated demand: recorded sales plus the sales likely missed while a product was out of stock. Bold marks the lowest total." }),
-    el("div", { class: "two" },
-      el("div", {}, el("h4", { text: "What we found" }), el("ul", {},
-        el("li", { text: `Recorded sales understate demand. Zero-sales streaks too long to be chance suggest this store missed about ${pct(lift)} more sales than it recorded.` }),
-        el("li", { text: `A model trained on recorded sales learns those empty shelves: its forecasts ran ${pct(Math.abs(acc.bias_model_sales))} low. Trained on estimated demand, ${pct(Math.abs(acc.bias_model), 1)} low.` }),
-        el("li", { text: `At the same stock as today, the model cut the cost of mistakes by ${pct(1 - ss.model_total / ss.rule_total)}. The rest of the gain comes from carrying more of what is cheap to keep and costly to run out of.` }),
-        el("li", { text: `Top sellers had ${pct(A, 1)} of demand met, just short of the 95% goal, and the cost-based rule carries ${pct(stockUp)} more stock than today.` }))),
-      el("div", {}, el("h4", { text: "What we changed" }), el("ul", {},
-        el("li", { text: "The order is not the forecast. Each product is stocked to the level its costs justify, and the sheet says why in plain words." }),
-        el("li", { text: "We added a Lean setting for owners who cannot carry more stock. It stays near today's stock and still costs less than ordering last month's sales." }),
-        el("li", { text: "Forecasts learn from estimated demand, not recorded sales, so a stockout does not shrink the next order." }),
-        el("li", { text: "Next: a separate, higher stock floor for top sellers, to reach the 95% goal, and real unit costs from the store's invoices." })))));
-
-  const costs = el("table", { class: "plain" },
-    el("thead", {}, el("tr", {}, el("th", { text: "Assumption" }), el("th", { class: "r", text: "Profit on a sale" }), el("th", { class: "r", text: "Cost of a leftover, per month" }), el("th", { class: "r", text: "Stock to cover" }))),
-    el("tbody", {}, ...Object.entries(M.costs).map(([k, c]) => el("tr", {}, el("td", { text: `${DEPT[k]}: ${c.why}` }),
-      el("td", { class: "r", text: pct(c.margin) + " of price" }), el("td", { class: "r", text: pct(c.extra) + " of cost" }),
-      el("td", { class: "r", text: `${pct(c.cr)} of months` })))));
-  card.append(el("details", {}, el("summary", { text: "Cost assumptions (the data has no unit costs)" }), el("div", { style: "overflow-x:auto;margin-top:8px" }, costs)));
-  return card;
+  return el("div", { class: "chart" }, svg);
 }
 
 (async function init() {
   const src = new URLSearchParams(location.search).get("data") || "data.json";
   D = window.__DATA || await (await fetch(src)).json();
   M = D.metrics;
-  $("#kicker").textContent = `Case study · Walmart store ${D.store}, M5 forecasting data`;
-  $("#foot").textContent = "Data: M5 Forecasting competition (Walmart, via Kaggle). Product names are hidden in the data, so products are shown by department and number.";
-  renderFacts();
+  $("#crumb").textContent = `Walmart store ${D.store} · order for ${monthName(D.asof)}`;
+  $("#foot").textContent = "Data: M5 Forecasting competition (Walmart, via Kaggle), not included in the repository. Product names are hidden in the data, so products are shown by department and number.";
   const id = location.hash.slice(1);
   current = D.items.find(it => it.id === id)
     || D.items.find(it => it.tier === "A" && lastOos(it) >= 3 && it.forecast >= 20) || D.items[0];
-  renderSheet(true);
+  render(true);
   let lastW = innerWidth, rt;
-  addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { if (innerWidth !== lastW) { lastW = innerWidth; shown = Math.max(shown, PAGE()); renderSheet(); } }, 150); });
+  addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { if (innerWidth !== lastW) { lastW = innerWidth; shown = Math.max(shown, PAGE()); render(); } }, 150); });
 })();
 </script>
 </body>

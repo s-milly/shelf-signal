@@ -4,7 +4,7 @@
 
 A product case study: a monthly order sheet for a small store, tested on five years of real sales from one Walmart store (M5 forecasting data, store CA_4, 3,049 products).
 
-![The order sheet](docs/order-sheet.png)
+![Shelf Signal: headline results](docs/hero.png)
 
 ## The problem
 
@@ -29,6 +29,24 @@ The two mistakes do not cost the same. Missing a $10 sale with a 35% margin lose
 | Top sellers: at least 95% of demand met from stock | These are the products customers come in for |
 | Stock carried no higher than today | A small store has limited cash and space |
 
+## The product
+
+**The order sheet.** One row per product: what sold last month, the forecast, the order, and the change. Products that likely ran out last month are flagged, because their sales understate demand.
+
+![The order sheet for April 2016](docs/order-sheet.png)
+
+**The product file.** Click a product to see why the order is what it is: 12 months of sales, the sales likely missed while it was out of stock (in red), the likely range, the order, and what really happened. This example ran out for 21 days the month before, so the sheet ordered 262 against 112 sold.
+
+<img src="docs/product-file.png" alt="Product file for Food 3, item 120" width="480">
+
+**Three stock settings.** Cost-based (recommended), Lean for owners who cannot carry more stock, and the old rule for comparison. The totals show what each would have cost in April 2016.
+
+![The three stock settings side by side](docs/stock-settings.png)
+
+**On a phone.**
+
+![The page on a phone](docs/phone.png)
+
 ## How it was tested
 
 - **Estimated demand.** A run of zero-sales days is flagged as a likely stockout when, given how often the product normally has a zero day, a run that long had under a 1% chance of happening by luck. The sales likely missed on those days are added back.
@@ -39,7 +57,7 @@ The two mistakes do not cost the same. Missing a $10 sale with a 35% margin lose
 
 ## Results
 
-![What we tested](docs/findings.png)
+![Every rule, scored in dollars](docs/rules.png)
 
 | Rule, 12 test months | Lost profit | Overstock | Total | Demand met | Stock carried |
 |---|---:|---:|---:|---:|---:|
@@ -47,6 +65,8 @@ The two mistakes do not cost the same. Missing a $10 sale with a 35% margin lose
 | Last month's sales +20% | $145K | $72K | $217K | 87% | +22% |
 | Model trained on recorded sales | $86K | $47K | $133K | 90% | +32% |
 | **Cost-based model, trained on estimated demand** | $50K | $59K | **$109K** | 94% | +41% |
+
+<img src="docs/frontier.png" alt="Stock carried against the cost of mistakes" width="560"> <img src="docs/criteria.png" alt="Success criteria" width="400">
 
 | Goal | Result | |
 |---|---|---|
@@ -77,6 +97,10 @@ The two mistakes do not cost the same. Missing a $10 sale with a 35% margin lose
 - Real unit costs from the store's invoices, in place of the assumed margins.
 - Supplier lead times and case sizes, so the stock level becomes an actual purchase order.
 - A pilot: run the sheet next to the owner's own orders for three months and compare.
+
+It also has a dark mode that follows the system setting.
+
+![Dark mode](docs/dark.png)
 
 ## Run it
 
